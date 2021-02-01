@@ -45,7 +45,7 @@ $ONGLOBAL
 *----------------------------------------------------------------------------------------------------------------------*
 
 ** scenario/case selection - this must match the name of the MsgData_<%%%>.gdx input data file **
-$SETGLOBAL data "<your datafile name here>"
+$SETGLOBAL data "MESSAGEix-water_water_test"
 
 ** MACRO mode
 * "none": MESSAGEix is run in stand-alone mode
@@ -76,27 +76,27 @@ $SETGLOBAL AUX_BOUND_VALUE "1e9"
 
 * include relaxations for specific constraint blocks to identify infeasibilities during model development/calibration
 * by adding 'slack' variables in the constraints and associated penalty factors in the objective function
-$SETGLOBAL SLACK_COMMODITY_EQUIVALENCE "*"
+$SETGLOBAL SLACK_COMMODITY_EQUIVALENCE ""
 
-$SETGLOBAL SLACK_CAP_NEW_BOUND_UP "*"
-$SETGLOBAL SLACK_CAP_NEW_BOUND_LO "*"
-$SETGLOBAL SLACK_CAP_TOTAL_BOUND_UP "*"
-$SETGLOBAL SLACK_CAP_TOTAL_BOUND_LO "*"
-$SETGLOBAL SLACK_CAP_NEW_DYNAMIC_UP "*"
-$SETGLOBAL SLACK_CAP_NEW_DYNAMIC_LO "*"
+$SETGLOBAL SLACK_CAP_NEW_BOUND_UP ""
+$SETGLOBAL SLACK_CAP_NEW_BOUND_LO ""
+$SETGLOBAL SLACK_CAP_TOTAL_BOUND_UP ""
+$SETGLOBAL SLACK_CAP_TOTAL_BOUND_LO ""
+$SETGLOBAL SLACK_CAP_NEW_DYNAMIC_UP ""
+$SETGLOBAL SLACK_CAP_NEW_DYNAMIC_LO ""
 
-$SETGLOBAL SLACK_ACT_BOUND_UP "*"
-$SETGLOBAL SLACK_ACT_BOUND_LO "*"
-$SETGLOBAL SLACK_ACT_DYNAMIC_UP "*"
-$SETGLOBAL SLACK_ACT_DYNAMIC_LO "*"
+$SETGLOBAL SLACK_ACT_BOUND_UP ""
+$SETGLOBAL SLACK_ACT_BOUND_LO ""
+$SETGLOBAL SLACK_ACT_DYNAMIC_UP ""
+$SETGLOBAL SLACK_ACT_DYNAMIC_LO ""
 
-$SETGLOBAL SLACK_LAND_SCEN_UP "*"
-$SETGLOBAL SLACK_LAND_SCEN_LO "*"
-$SETGLOBAL SLACK_LAND_TYPE_UP "*"
-$SETGLOBAL SLACK_LAND_TYPE_LO "*"
+$SETGLOBAL SLACK_LAND_SCEN_UP ""
+$SETGLOBAL SLACK_LAND_SCEN_LO ""
+$SETGLOBAL SLACK_LAND_TYPE_UP ""
+$SETGLOBAL SLACK_LAND_TYPE_LO ""
 
-$SETGLOBAL SLACK_RELATION_BOUND_UP "*"
-$SETGLOBAL SLACK_RELATION_BOUND_LO "*"
+$SETGLOBAL SLACK_RELATION_BOUND_UP ""
+$SETGLOBAL SLACK_RELATION_BOUND_LO ""
 
 *----------------------------------------------------------------------------------------------------------------------*
 * launch the MESSAGEix or MESSAGEix-MACRO run file with the settings as defined above                                      *

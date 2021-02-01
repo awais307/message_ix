@@ -1,0 +1,28 @@
+--- Job MESSAGE_master.gms Start 11/10/20 19:47:17 29.1.0 rbb4180b DEX-DEG x86 64bit/Mac OS X
+--- GAMS Parameters defined
+    Input /Users/MuhammadAwais/Reps/message_ix/message_ix/model/MESSAGE_master.gms
+    PageSize 0
+    ScrDir /Users/MuhammadAwais/Reps/message_ix/message_ix/model/225a/
+    SysDir /Applications/GAMS29.1/GAMS Terminal.app/Contents/MacOS/
+    LogOption 3
+    ErrMsg 1
+    ErrorLog 99
+    IDE 1
+    LstTitleLeftAligned 1
+GAMS 29.1.0   Copyright (C) 1987-2019 GAMS Development. All rights reserved
+Licensee: Small MUD - 5 User License                     S190927/0001AP-GEN
+          IIASA, Information and Communication Technologies Dep.      DC216
+          License for teaching and research at degree granting institutions
+          License Admin: Melanie Weed-Wenighofer, wenighof@iiasa.ac.at     
+--- Starting compilation
+--- MESSAGE_master.gms(114) 2 Mb
+--- . MESSAGE_run.gms(65) 2 Mb
+***
+*** Abort "input GDX file 'data/MsgData_MsgData_MESSAGEix-water_water_test_1.gdx' does not exist!"
+***
+*** Error 343 in /Users/MuhammadAwais/Reps/message_ix/message_ix/model/MESSAGE/model_setup.gms
+
+--- MESSAGE_master.gms(114) 2 Mb 1 Error
+*** Status: Compilation error(s)
+--- Job MESSAGE_master.gms Stop 11/10/20 19:47:17 elapsed 0:00:00.011
+

@@ -58,3 +58,10 @@ htmlcov
 
 # JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
 /**/.idea
+*.lck
+*.lobs
+tutorial/westeros/C:Usersawais.localshareixmplocaldbdefault.properties
+tutorial/westeros/C:Usersawais.localshareixmplocaldbdefault.script
+message_ix/model/MESSAGE_master.log~1
+message_ix/model/MESSAGE_master.gms
+message_ix/model/MESSAGE_master.gms

@@ -1,10 +1,80 @@
-Next release
-============
+.. Next release
+.. ============
+
+.. All changes
+.. -----------
+
+.. _v3.3.0:
+
+v3.3.0 (2021-05-28)
+===================
+
+Migration notes
+---------------
+
+``rmessageix`` (and ``rixmp``) are deprecated and removed, as newer versions of the R `reticulate <https://rstudio.github.io/reticulate/>`_ package allow direct import and use of the Python modules with full functionality.
+See the updated page for :doc:`rmessageix`, and the updated instructions on how to :ref:`install-r`.
+
 
 All changes
 -----------
 
+- Update the Westeros :doc:`tutorial <tutorials>` on flexible generation (:pull:`369`).
+- Add a Westeros :doc:`tutorial <tutorials>` on modeling renewable resource supply curves (:pull:`370`).
+- Update the Westeros :doc:`tutorial <tutorials>` on firm capacity (:pull:`368`).
+- Remove ``rmessageix`` (:pull:`473`).
+- Expand documentation of :ref:`commodity storage <gams-storage>` sets, parameters, and equations (:pull:`473`).
+- Add two new Westeros :doc:`tutorial <tutorials>` on creating scenarios from Excel files (:pull:`450`).
+- Fix bug in :meth:`.years_active` to use the lifetime corresponding to the vintage year for which the active years are being retrieved (:pull:`456`).
+- Add a PowerPoint document usable to generate the RES diagrams for the Westeros tutorials (:pull:`408`).
+- Expand documentation :doc:`install` for installing GAMS under macOS (:pull:`460`).
+- Add new Westeros :doc:`tutorial <tutorials>` on add-on technologies (:pull:`365`).
+- Expand documentation of :ref:`dynamic constraint parameters <section_parameter_dynamic_constraints>` (:pull:`454`).
+- Adjust :mod:`message_ix.reporting` to use :mod:`genno` / :mod:`ixmp.reporting` changes in `ixmp PR #397 <https://github.com/iiasa/ixmp/pull/397>`_ (:pull:`441`).
+
+
+v3.2.0 (2021-01-24)
+===================
+
+Migration notes
+---------------
+
+- Code that uses :func:`.make_df` can be adjusted in one of two ways.
+  See the function documentation for details.
+  The function should be imported from the top level:
+
+  .. code-block:: python
+
+     from message_ix import make_df
+
+
+All changes
+-----------
+
+- :pull:`407`: Use :mod:`.reporting` in tutorials; add :mod:`.util.tutorial` for shorthand code used to streamline tutorials.
+- :pull:`407`: Make :class:`.Reporter` a top-level class.
+- :pull:`415`: Improve :func:`.make_df` to generate empty, partially-, or fully-filled data frames with the correct columns for any MESSAGE or MACRO parameter.
+- :pull:`415`: Make complete lists of :data:`.MESSAGE_ITEMS`, :data:`.MACRO_ITEMS` and their dimensions accessible through the Python API.
+- :pull:`421`: Fix discounting from forward-looking to backward-looking and provide an explanation of the period structure and discounting in documentation of :doc:`time`.
+
+
+v3.1.0 (2020-08-28)
+===================
+
+:mod:`message_ix` v3.1.0 coincides with :mod:`ixmp` v3.1.0.
+
+For citing :mod:`message_ix`, distinct digital object identifiers (DOIs) are available for every release from v3.1.0 onwards; see the :ref:`user guidelines and notice <notice-cite>` for more information and how to cite.
+
+All changes
+-----------
+
+- :pull:`367`: Add new westeros tutorial on share constraints.
+- :pull:`366`: Add new Westeros tutorial on modeling fossil resource supply curves.
+- :pull:`391`, :pull:`392`: Add a documentation page on :doc:`pre-requisite knowledge & skills <prereqs>`; expand guidelines on :doc:`contributing`.
+- :pull:`389`: Fix a bug in :func:`.pyam.concat` using *non*-pyam objects.
+- :pull:`286`, :pull:`381`, :pull:`389`: Improve :meth:`.add_horizon` to also set ``duration_period``; add documentation of :doc:`time`.
 - :pull:`377`: Improve the :doc:`rmessageix <rmessageix>` R package, tutorials, and expand documentation and installation instructions.
+- :pull:`382`: Update discount factor from ``df_year`` to ``df_period`` in documentation of the objective function to match the GAMS formulation.
 
 
 v3.0.0 (2020-06-07)

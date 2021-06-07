@@ -11,6 +11,8 @@
 ***
 
 ***
+* .. _section_parameter_general:
+*
 * General parameters of the |MESSAGEix| implementation
 * ----------------------------------------------------
 *
@@ -58,8 +60,8 @@
 *
 * .. [#year_auto] The values for this parameter are computed automatically when exporting a ``MESSAGE``-scheme
 *    :class:`ixmp.Scenario` to gdx.
-*    Note that in |MESSAGEix|, the elements of the ``year`` set are understood to be the last year in a period,
-*    see :ref:`this footnote <period_year_footnote>`.
+*    Note that in |MESSAGEix|, the elements of the ``year`` set are understood to be the last year in a period.
+*    See :doc:`/time`.
 *
 * .. [#df_auto] These parameters are computed during the GAMS execution.
 ***
@@ -76,6 +78,8 @@ Parameters
 ;
 
 ***
+* .. _section_parameter_resources:
+*
 * Parameters of the `Resources` section
 * -------------------------------------
 *
@@ -123,6 +127,8 @@ Parameter
 ;
 
 ***
+* .. _section_parameter_demand:
+*
 * Parameters of the `Demand` section
 * ----------------------------------
 *
@@ -249,6 +255,8 @@ Parameters
 ;
 
 ***
+* .. _section_parameter_bounds:
+*
 * Bounds on capacity and activity
 * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 *
@@ -286,12 +294,21 @@ Parameters
 ;
 
 ***
-* Dynamic constraints on capacity and activity
-* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* .. _section_parameter_dynamic_constraints:
 *
-* The following parameters specify constraints on the growth of new capacity and activity, i.e., market penetration. The implementation of |MESSAGEix|
-* includes the functionality for 'soft' relaxations of dynamic constraints on new-built capacity and activity (see Keppo and Strubegger, 2010
-* :cite:`keppo_short_2010`). For more information, please refer to the equations in section :ref:`dynamic_constraints` of the mathematical formulation.
+* Dynamic constraints on new capacity and activity
+* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+*
+* These parameters are used in the :ref:`dynamic constraint equations <dynamic_constraints>` to limit the growth (or decline) of activity or of new capacity in each period, relative to the preceding period.
+* The ``soft_`` parameters control ‘soft’ relaxation of these dynamic constraints, using the method of Keppo and Strubegger (2010) :cite:`keppo_short_2010`.
+*
+* The ``growth_`` and ``soft_`` parameters are expressed as *relative annual change* and are unitless.
+* Because these are annual values, are compounded in the :ref:`constraint equations <dynamic_constraints>` by ``duration_period`` (:math:`|y|`) to obtain the relative *inter-period* change.
+*
+* **Example:** a value of 0.05 for ``growth_activity_up`` sets an upper bound of :math:`1 + 0.05 = 105\%` activity in one year relative to activity in the preceding year.
+* In a period with duration :math:`|y| = 5 \text{ years}`, the activity in the :doc:`representative year </time>` is bounded at :math:`(1.05)^5 = 128\%` of the activity in the representative year of the preceding period.
+*
+* Because these parameters do not have a ``mode`` (:math:`m`) dimension, they cannot be used to constraint the activity/new capacity of *single modes* of technologies; only the total across all modes.
 *
 * .. list-table::
 *    :widths: 30 70
@@ -301,33 +318,28 @@ Parameters
 *      - Index names
 *    * - initial_new_capacity_up
 *      - ``node_loc`` | ``tec`` | ``year_vtg``
-*    * - growth_new_capacity_up [#mpx]_
+*    * - growth_new_capacity_up
 *      - ``node_loc`` | ``tec`` | ``year_vtg``
-*    * - soft_new_capacity_up [#mpx]_
+*    * - soft_new_capacity_up
 *      - ``node_loc`` | ``tec`` | ``year_vtg``
 *    * - initial_new_capacity_lo
 *      - ``node_loc`` | ``tec`` | ``year_vtg``
-*    * - growth_new_capacity_lo [#mpx]_
+*    * - growth_new_capacity_lo
 *      - ``node_loc`` | ``tec`` | ``year_vtg``
-*    * - soft_new_capacity_lo [#mpx]_
+*    * - soft_new_capacity_lo
 *      - ``node_loc`` | ``tec`` | ``year_vtg``
-*    * - initial_activity_up [#mpa]_
+*    * - initial_activity_up
 *      - ``node_loc`` | ``tec`` | ``year_act`` | ``time``
-*    * - growth_activity_up [#mpx]_ [#mpa]_
+*    * - growth_activity_up
 *      - ``node_loc`` | ``tec`` | ``year_act`` | ``time``
-*    * - soft_activity_up [#mpx]_
+*    * - soft_activity_up
 *      - ``node_loc`` | ``tec`` | ``year_act`` | ``time``
-*    * - initial_activity_lo [#mpa]_
+*    * - initial_activity_lo
 *      - ``node_loc`` | ``tec`` | ``year_act`` | ``time``
-*    * - growth_activity_lo [#mpx]_ [#mpa]_
+*    * - growth_activity_lo
 *      - ``node_loc`` | ``tec`` | ``year_act`` | ``time``
-*    * - soft_activity_lo [#mpx]_
+*    * - soft_activity_lo
 *      - ``node_loc`` | ``tec`` | ``year_act`` | ``time``
-*
-* .. [#mpx] All parameters related to the dynamic constraints are understood as the bound on the rate
-*    of growth/decrease, not as in percentage points and not as (1+growth rate).
-*
-* .. [#mpa] The dynamic constraints are not indexed over modes in the |MESSAGEix| implementation.
 *
 ***
 
@@ -354,6 +366,8 @@ Parameters
 *----------------------------------------------------------------------------------------------------------------------*
 
 ***
+* .. _section_parameter_addon:
+*
 * Parameters for the add-on technologies
 * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 *
@@ -392,6 +406,8 @@ Parameters
 *----------------------------------------------------------------------------------------------------------------------*
 
 ***
+* .. _section_parameter_storage:
+*
 * Parameters for representing storage solutions
 * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 *
@@ -431,6 +447,8 @@ Parameters
 *----------------------------------------------------------------------------------------------------------------------*
 
 ***
+* .. _section_parameter_soft_constraints:
+*
 * Cost parameters for 'soft' relaxations of dynamic constraints
 * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 *
@@ -477,6 +495,8 @@ Parameters
 ;
 
 ***
+* .. _section_parameter_historical:
+*
 * Historical capacity and activity values
 * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 *
@@ -503,6 +523,8 @@ Parameters
 ;
 
 ***
+* .. _section_parameter_investment:
+*
 * Auxiliary investment cost parameters and multipliers
 * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 *
@@ -543,6 +565,8 @@ Parameters
 *----------------------------------------------------------------------------------------------------------------------*
 
 ***
+* .. _section_parameter_emissions:
+*
 * Parameters of the `Emission` section
 * ------------------------------------
 *
@@ -582,6 +606,8 @@ Parameters
 *----------------------------------------------------------------------------------------------------------------------*
 
 ***
+* .. _section_parameter_landuse_emulator:
+*
 * Parameters of the `Land-Use model emulator` section
 * ---------------------------------------------------
 *
@@ -654,6 +680,8 @@ Parameters
 *----------------------------------------------------------------------------------------------------------------------*
 
 ***
+* .. _section_parameter_share_constraints:
+*
 * Parameters of the `Share Constraints` section
 * ---------------------------------------------
 *
@@ -689,6 +717,8 @@ Parameters
 *----------------------------------------------------------------------------------------------------------------------*
 
 ***
+* .. _section_parameter_generic_relations:
+*
 * Parameters of the `Relations` section
 * -------------------------------------
 *
@@ -731,6 +761,8 @@ Parameters
 *----------------------------------------------------------------------------------------------------------------------*
 
 ***
+* .. _section_parameter_fixed:
+*
 * Fixed variable values
 * ---------------------
 *
@@ -778,6 +810,8 @@ Parameters
 *----------------------------------------------------------------------------------------------------------------------*
 
 ***
+* .. _section_parameter_auxiliary_reporting:
+*
 * Auxiliary reporting parameters
 * ------------------------------
 *

@@ -1,0 +1,149 @@
+name: Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  GAMS_VERSION: 25.1.1
+  # See description in lint.yml
+  depth: 100
+
+jobs:
+  pytest:
+    strategy:
+      matrix:
+        os:
+        - macos-latest
+        - ubuntu-latest
+        - windows-latest
+        python-version:
+        - "3.6"  # Earliest version supported by message_ix
+        - "3.8"
+        - "3.9"  # Latest release / latest supported by message_ix
+
+        # For development versions of Python, compiled binary wheels are not
+        # available for some dependencies, e.g. llvmlite, numba, numpy, and/or
+        # pandas. Compiling these on the job runner requires a more elaborate
+        # build environment, currently out of scope for the message_ix project.
+        # - "3.10.0-alpha.1"  # Development version
+
+      fail-fast: false
+
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.os }}-py${{ matrix.python-version }}
+
+    steps:
+    - name: Cancel previous runs that have not completed
+      uses: styfle/cancel-workflow-action@0.7.0
+      with:
+        access_token: ${{ github.token }}
+
+    - name: Check out ixmp
+      uses: actions/checkout@v2
+      with:
+        repository: iiasa/ixmp
+        # For PRs that depend on an ixmp PR branch, uncomment the following 2
+        # lines and adjust to suit:
+        # repository: USERNAME/ixmp
+        # ref: issue/999
+        path: ixmp
+        fetch-depth: ${{ env.depth }}
+
+    - name: Check out message_ix
+      uses: actions/checkout@v2
+      with:
+        path: message_ix
+        fetch-depth: ${{ env.depth }}
+
+    - name: Fetch tags (for setuptools-scm)
+      run: |
+        (cd ixmp; git fetch --tags --depth=${{ env.depth }})
+        (cd message_ix; git fetch --tags --depth=${{ env.depth }})
+      shell: bash
+
+    - uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Set RETICULATE_PYTHON
+      # Use the environment variable set by the setup-python action, above.
+      run: echo "RETICULATE_PYTHON=$pythonLocation" >> $GITHUB_ENV
+      shell: bash
+
+    - uses: r-lib/actions/setup-r@master
+      id: setup-r
+
+    - name: Use OpenJDK 14 (macOS only)
+      # Using the default OpenJDK 1.8 on the macos-latest runner produces
+      # "Abort trap: 6" when JPype1 starts the JVM
+      if: ${{ startsWith(matrix.os, 'macos') }}
+      uses: actions/setup-java@v1
+      with:
+        java-version: '14'
+
+    - name: Cache GAMS installer, Python packages, and R packages
+      uses: actions/cache@v2
+      with:
+        path: |
+          gams
+          ~/.cache/pip
+          ~/Library/Caches/pip
+          ~/appdata/local/pip/cache
+          ${{ env.R_LIBS_USER }}
+        key: ${{ matrix.os }}-gams${{ env.GAMS_VERSION }}-py${{ matrix.python-version }}-R${{ steps.setup-r.outputs.installed-r-version }}
+        restore-keys: |
+          ${{ matrix.os }}-gams${{ env.GAMS_VERSION }}-py${{ matrix.python-version }}-
+          ${{ matrix.os }}-gams${{ env.GAMS_VERSION }}-
+          ${{ matrix.os }}-
+
+    - uses: iiasa/actions/setup-gams@main
+      with:
+        version: ${{ env.GAMS_VERSION }}
+        license: ${{ secrets.GAMS_LICENSE }}
+
+    - uses: ts-graphviz/setup-graphviz@v1
+
+    - name: Upgrade pip, wheel, setuptools-scm
+      run: python -m pip install --upgrade pip wheel setuptools-scm
+
+    - name: Install ixmp and dependencies
+      working-directory: ixmp
+      run: pip install .
+
+    - name: Install Python package and dependencies
+      working-directory: message_ix
+      run: pip install .[tests]
+
+    - name: Install R dependencies and tutorial requirements
+      run: |
+        install.packages("remotes")
+        remotes::install_cran(
+          c("dplyr", "IRkernel", "reticulate"),
+          dependencies = TRUE,
+          # force = TRUE,
+        )
+        IRkernel::installspec()
+      shell: Rscript {0}
+
+    - name: Run test suite using pytest
+      env:
+        # For test_cli.test_dl; see code in message_ix.cli.dl
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      working-directory: message_ix
+      # Work around iiasa/ixmp#411
+      run: |
+        pytest message_ix -m "not nightly" -rA --verbose --cov-report=xml --color=yes || ( [ $? -eq 127 -a "${{ runner.os }}" = "Windows" ] && echo "Spurious exit code 127 from pytest" && exit 0)
+      shell: bash
+
+    - name: Test documentation build using Sphinx
+      if: ${{ startsWith(matrix.os, 'ubuntu') }}
+      working-directory: message_ix
+      run: make --directory=doc html
+
+    - name: Upload test coverage to Codecov.io
+      uses: codecov/codecov-action@v1.2.1
+      with:
+        root_dir: message_ix
